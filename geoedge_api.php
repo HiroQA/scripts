@@ -1,12 +1,14 @@
+#!/usr/bin/php -q
+
 <?php
 
 require __DIR__ . '/../geoedge_api/bootstrap.php';
 
 $conf = parse_ini_file( __DIR__ . '/GeoEdge.ini' );
 $geoEdgeClient = new GeoEdgeClient( $conf['authorization_key']);
+$my_path = "/geoedge/api_scripts/";
 
-
-function get_all_data($client)
+function get_all_data($client, $my_path)
 {
 $get_project_list = $client->ListProjects();
 $yesterday = date('Y-m-d 00:00:00',strtotime("yesterday"));
@@ -54,7 +56,7 @@ $yesterday = date('Y-m-d 00:00:00',strtotime("yesterday"));
 
 //create file and append the values.
 		 $yesterday = date('Y-m-d',strtotime("yesterday"));
-		 $new_file = fopen($yesterday, "a");
+		 $new_file = fopen($my_path.$yesterday, "a");
 
 		 fwrite($new_file, $network_name);
 		 fwrite($new_file, $network_id);
@@ -78,7 +80,7 @@ $yesterday = date('Y-m-d 00:00:00',strtotime("yesterday"));
     }
 }
 
-get_all_data($geoEdgeClient);
+get_all_data($geoEdgeClient, $my_path);
 
 
 // $response = $client->SearchAds( '2015-07-09 00:00:00', 'f0e7a35c85dcb6f950899afaef8b7387' );
